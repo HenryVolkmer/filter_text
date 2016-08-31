@@ -25,6 +25,8 @@
 namespace MetaModels\Filter\Setting;
 
 use MetaModels\Filter\IFilter;
+use MetaModels\Filter\Rules\Condition\ConditionAnd;
+use MetaModels\Filter\Rules\Condition\ConditionOr;
 use MetaModels\Filter\Rules\SearchAttribute;
 use MetaModels\Filter\Rules\StaticIdList;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
@@ -64,19 +66,44 @@ class Text extends SimpleLookup
      */
     public function prepareRules(IFilter $objFilter, $arrFilterUrl)
     {
+        $strTextSearch = $this->get('textsearch');
+        switch ($strTextSearch) {
+            case 'beginswith':
+            case 'endswith':
+            case 'exact':
+            default:
+                $this->doSimpleSearch($strTextSearch, $objFilter, $arrFilterUrl);
+                break;
+
+            case 'any':
+            case 'all':
+                $this->doComplexSearch($strTextSearch, $objFilter, $arrFilterUrl);
+                break;
+        }
+    }
+
+    /**
+     * @param string   $strTextSearch
+     *
+     * @param IFilter  $objFilter    The filter to append the rules to.
+     *
+     * @param string[] $arrFilterUrl The parameters to evaluate.
+     *
+     */
+    private function doSimpleSearch($strTextSearch, $objFilter, $arrFilterUrl)
+    {
         $objMetaModel  = $this->getMetaModel();
         $objAttribute  = $objMetaModel->getAttributeById($this->get('attr_id'));
         $strParamName  = $this->getParamName();
         $strParamValue = $arrFilterUrl[$strParamName];
-        $strTextsearch = $this->get('textsearch');
 
         // React on wildcard, overriding the search type.
         if (strpos($strParamValue, '*') !== false) {
-            $strTextsearch = 'exact';
+            $strTextSearch = 'exact';
         }
 
         // Type of search.
-        switch ($strTextsearch) {
+        switch ($strTextSearch) {
             case 'beginswith':
                 $strWhat = $strParamValue . '%';
                 break;
@@ -93,10 +120,72 @@ class Text extends SimpleLookup
 
         if ($objAttribute && $strParamName && $strParamValue) {
             $objFilter->addFilterRule(new SearchAttribute($objAttribute, $strWhat));
+
             return;
         }
 
         $objFilter->addFilterRule(new StaticIdList(null));
+    }
+
+    /**
+     * @param string   $strTextSearch
+     *
+     * @param IFilter  $objFilter    The filter to append the rules to.
+     *
+     * @param string[] $arrFilterUrl The parameters to evaluate.
+     *
+     */
+    private function doComplexSearch($strTextSearch, $objFilter, $arrFilterUrl)
+    {
+        $objMetaModel  = $this->getMetaModel();
+        $objAttribute  = $objMetaModel->getAttributeById($this->get('attr_id'));
+        $strParamName  = $this->getParamName();
+        $strParamValue = $arrFilterUrl[$strParamName];
+        $parentFilter  = null;
+        $words         = array();
+
+        // Type of search.
+        switch ($strTextSearch) {
+            case 'any':
+                $words        = $this->getWords($strParamValue);
+                $parentFilter = new ConditionOr();
+                break;
+            case 'all':
+                $words        = $this->getWords($strParamValue);
+                $parentFilter = new ConditionAnd();
+                break;
+        }
+
+        if ($objAttribute && $strParamName && $strParamValue && $parentFilter) {
+            foreach ($words as $word) {
+                $subFilter = $objMetaModel->getEmptyFilter();
+                $subFilter->addFilterRule(new SearchAttribute($objAttribute, '%' . $word . '%'));
+                $parentFilter->addChild($subFilter);
+            }
+
+            $objFilter->addFilterRule($parentFilter);
+
+            return;
+        }
+
+        $objFilter->addFilterRule(new StaticIdList(null));
+    }
+
+    /**
+     * Use the delimiter from the setting and make a list of words.
+     *
+     * @param string $string The list of words as a single string.
+     *
+     * @return array The list of word split on the delimiter.
+     */
+    private function getWords($string)
+    {
+        $delimiter = $this->get('delimiter');
+        if (empty($delimiter)) {
+            $delimiter = ' ';
+        }
+
+        return trimsplit($delimiter, $string);
     }
 
     /**

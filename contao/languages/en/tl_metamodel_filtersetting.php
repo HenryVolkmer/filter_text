@@ -7,6 +7,7 @@
  * data in each collection.
  *
  * PHP version 5
+ *
  * @package    MetaModels
  * @subpackage FilterText
  * @author     Christian de la Haye <service@delahaye.de>
@@ -18,13 +19,14 @@
 /**
  * filter types
  */
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typenames']['text']     = 'Text filter';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typenames']['text'] = 'Text filter';
 
 
 /**
  * fields
  */
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['textsearch']   = array('Search type', 'Finding text parts.');
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['textsearch'] = array('Search type', 'Finding text parts.');
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['delimiter']  = array('Delimeter', 'Set delimeter for search type "any" or "all" - default delimeter is space.');
 
 
 /**
@@ -33,3 +35,5 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['textsearch']   = array('Searc
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['exact']      = 'exact search';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['beginswith'] = 'begins with search term';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['endswith']   = 'ends with search term';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['any']        = 'search any word (OR)';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['all']        = 'search all words (AND)';
