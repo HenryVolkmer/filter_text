@@ -19,6 +19,9 @@ mapping:
     - "cboelter <christopher@boelter.eu>"
     - "Christopher Boelter <c.boelter@cogizz.de>"
   "Martin Treml <github@r2pi.net>": "MrTool <github@r2pi.net>"
+  "Ingolf Steinhardt <info@e-spin.de>":
+    - "xantippe <info@e-spin.de>"
+    - "zonky2 <info@e-spin.de>"
 
 copy-left:
   "Christoph Wiechert <christoph.wiechert@4wardmedia.de>": popup.php

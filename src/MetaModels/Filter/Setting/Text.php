@@ -1,24 +1,27 @@
 <?php
 
 /**
- * The MetaModels extension allows the creation of multiple collections of custom items,
- * each with its own unique set of selectable attributes, with attribute extendability.
- * The Front-End modules allow you to build powerful listing and filtering of the
- * data in each collection.
+ * This file is part of MetaModels/filter_text.
  *
- * PHP version 5
+ * (c) 2012-2016 The MetaModels team.
  *
- * @package      MetaModels
- * @subpackage   FilterText
- * @author       Christian de la Haye <service@delahaye.de>
- * @author       Andreas Isaak <info@andreas-isaak.de>
- * @author       Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @author       David Molineus <mail@netzmacht.de>
- * @author       David Maack <david.maack@arcor.de>
- * @author       Stefan Heimes <stefan_heimes@hotmail.com>
- * @author       Christopher Boelter <christopher@boelter.eu>
- * @copyright    The MetaModels team.
- * @license      LGPL.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * @package    MetaModels
+ * @subpackage FilterText
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Christian de la Haye <service@delahaye.de>
+ * @author     Andreas Isaak <info@andreas-isaak.de>
+ * @author     David Molineus <mail@netzmacht.de>
+ * @author     David Maack <david.maack@arcor.de>
+ * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Christopher Boelter <christopher@boelter.eu>
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2016 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_text/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
 
@@ -33,11 +36,6 @@ use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
 /**
  * Filter "text field" for FE-filtering, based on filters by the MetaModels team.
- *
- * @package       MetaModels
- * @subpackage    FrontendFilter
- * @author        Christian de la Haye <service@delahaye.de>
- * @author        Stefan Heimes <stefan_heimes@hotmail.com>
  */
 class Text extends SimpleLookup
 {
@@ -83,12 +81,15 @@ class Text extends SimpleLookup
     }
 
     /**
-     * @param string   $strTextSearch
+     * Make a simple search with a like.
      *
-     * @param IFilter  $objFilter    The filter to append the rules to.
+     * @param string   $strTextSearch The mode for the search.
      *
-     * @param string[] $arrFilterUrl The parameters to evaluate.
+     * @param IFilter  $objFilter     The filter to append the rules to.
      *
+     * @param string[] $arrFilterUrl  The parameters to evaluate.
+     *
+     * @return void
      */
     private function doSimpleSearch($strTextSearch, $objFilter, $arrFilterUrl)
     {
@@ -128,12 +129,15 @@ class Text extends SimpleLookup
     }
 
     /**
-     * @param string   $strTextSearch
+     * Do a complex search with each word. Search for all words or for any word.
      *
-     * @param IFilter  $objFilter    The filter to append the rules to.
+     * @param string   $strTextSearch The mode any or all.
      *
-     * @param string[] $arrFilterUrl The parameters to evaluate.
+     * @param IFilter  $objFilter     The filter to append the rules to.
      *
+     * @param string[] $arrFilterUrl  The parameters to evaluate.
+     *
+     * @return void
      */
     private function doComplexSearch($strTextSearch, $objFilter, $arrFilterUrl)
     {
@@ -153,6 +157,10 @@ class Text extends SimpleLookup
             case 'all':
                 $words        = $this->getWords($strParamValue);
                 $parentFilter = new ConditionAnd();
+                break;
+
+            default:
+                // Do nothing. Because the parent function saved us. The value have to be any or all.
                 break;
         }
 
@@ -209,7 +217,7 @@ class Text extends SimpleLookup
         $arrReturn = array();
         $this->addFilterParam($this->getParamName());
 
-        // Address search.
+        // Text search.
         $arrCount  = array();
         $arrWidget = array(
             'label'     => array(
@@ -220,9 +228,10 @@ class Text extends SimpleLookup
             'count'     => $arrCount,
             'showCount' => $objFrontendFilterOptions->isShowCountValues(),
             'eval'      => array(
-                'colname'  => $attribute->getColname(),
-                'urlparam' => $this->getParamName(),
-                'template' => $this->get('template'),
+                'colname'     => $attribute->getColname(),
+                'urlparam'    => $this->getParamName(),
+                'template'    => $this->get('template'),
+                'placeholder' => $this->get('placeholder'),
             )
         );
 
