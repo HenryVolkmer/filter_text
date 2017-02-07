@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_text.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2017 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,7 +20,7 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Christopher Boelter <christopher@boelter.eu>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2016 The MetaModels team.
+ * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_text/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -119,7 +119,7 @@ class Text extends SimpleLookup
                 break;
         }
 
-        if ($objAttribute && $strParamName && $strParamValue) {
+        if ($objAttribute && $strParamName && $strParamValue !== null) {
             $objFilter->addFilterRule(new SearchAttribute($objAttribute, $strWhat));
 
             return;
@@ -164,7 +164,7 @@ class Text extends SimpleLookup
                 break;
         }
 
-        if ($objAttribute && $strParamName && $strParamValue && $parentFilter) {
+        if ($objAttribute && $strParamName && $strParamValue !== null && $parentFilter) {
             foreach ($words as $word) {
                 $subFilter = $objMetaModel->getEmptyFilter();
                 $subFilter->addFilterRule(new SearchAttribute($objAttribute, '%' . $word . '%'));
