@@ -29,13 +29,10 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['text extends d
     '+config' => array('attr_id', 'urlparam', 'label', 'template', 'textsearch', 'placeholder'),
 );
 
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes'] = array
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['textsearch'] = array
 (
-    'textsearch' => array
-    (
-        'any' => array('delimiter'),
-        'all' => array('delimiter')
-    )
+    'any' => array('delimiter'),
+    'all' => array('delimiter')
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['textsearch'] = array
