@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_text.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -20,8 +20,8 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Christopher Boelter <christopher@boelter.eu>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/filter_text/blob/master/LICENSE LGPL-3.0
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_text/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -31,6 +31,7 @@ use MetaModels\Filter\IFilter;
 use MetaModels\Filter\Rules\Condition\ConditionAnd;
 use MetaModels\Filter\Rules\Condition\ConditionOr;
 use MetaModels\Filter\Rules\SearchAttribute;
+use MetaModels\Filter\Rules\SimpleQuery;
 use MetaModels\Filter\Rules\StaticIdList;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
@@ -77,6 +78,8 @@ class Text extends SimpleLookup
             case 'all':
                 $this->doComplexSearch($strTextSearch, $objFilter, $arrFilterUrl);
                 break;
+            case 'regexp':
+                $this->doRegexpSearch($objFilter, $arrFilterUrl);
         }
     }
 
@@ -194,6 +197,45 @@ class Text extends SimpleLookup
         }
 
         return trimsplit($delimiter, $string);
+    }
+
+    /**
+     * Make a simple search with a regexp.
+     *
+     * @param IFilter  $objFilter     The filter to append the rules to.
+     *
+     * @param string[] $arrFilterUrl  The parameters to evaluate.
+     *
+     * @return void
+     */
+    private function doRegexpSearch($objFilter, $arrFilterUrl)
+    {
+        $objMetaModel  = $this->getMetaModel();
+        $objAttribute  = $objMetaModel->getAttributeById($this->get('attr_id'));
+        $strParamName  = $this->getParamName();
+        $strParamValue = $arrFilterUrl[$strParamName];
+        $strPattern    = $this->get('pattern');
+
+        if ($objAttribute && $strParamName && $strParamValue !== null) {
+            if (empty($strPattern) || substr_count($strPattern, '%s') != 1) {
+                $strPattern = '%s';
+            }
+
+            $strRegex = sprintf($strPattern, $strParamValue);
+
+            $strQuery = sprintf(
+                'SELECT id FROM %s WHERE %s REGEXP \'%s\'',
+                $objMetaModel->getTableName(),
+                $objAttribute->getColName(),
+                $strRegex
+            );
+
+            $objFilter->addFilterRule(new SimpleQuery($strQuery));
+
+            return;
+        }
+
+        $objFilter->addFilterRule(new StaticIdList(null));
     }
 
     /**

@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_text.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,8 +19,8 @@
  * @author     Christopher Boelter <christopher@boelter.eu>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  2012-2016 The MetaModels team.
- * @license    https://github.com/MetaModels/filter_text/blob/master/LICENSE LGPL-3.0
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_text/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -31,8 +31,9 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['text extends d
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['textsearch'] = array
 (
-    'any' => array('delimiter'),
-    'all' => array('delimiter')
+    'any'    => array('delimiter'),
+    'all'    => array('delimiter'),
+    'regexp' => array('pattern')
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['textsearch'] = array
@@ -40,7 +41,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['textsearch'] = array
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['textsearch'],
     'exclude'   => true,
     'inputType' => 'select',
-    'options'   => array('exact', 'beginswith', 'endswith', 'any', 'all'),
+    'options'   => array('exact', 'beginswith', 'endswith', 'any', 'all', 'regexp'),
     'reference' => $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references'],
     'eval'      => array('tl_class' => 'w50', 'includeBlankOption' => true, 'submitOnChange' => true)
 );
@@ -51,6 +52,19 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['delimiter'] = array
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => array('tl_class' => 'w50')
+);
+
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['pattern'] = array
+(
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['pattern'],
+    'exclude'   => true,
+    'inputType' => 'text',
+    'default'   => '%s',
+    'load_callback' => function($varValue, $dc) 
+        {
+            return !empty($varValue) ? $varValue : '%s';
+        },
+    'eval'      => array('tl_class' => 'w50', 'mandatory' => true, 'preserveTags' => true)
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['placeholder'] = array

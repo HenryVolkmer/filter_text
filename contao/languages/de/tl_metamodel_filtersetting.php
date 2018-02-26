@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2016-09-02T04:13:02+02:00
+ * last-updated: 2018-02-04T22:51:30+01:00
  */
 
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['delimiter']['0']           = 'Trennzeichen (Delimeter)';
@@ -21,6 +21,6 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['beginswith'] = 
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['endswith']   = 'endet mit Suchbegriff';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['exact']      = 'exakte Suche';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['textsearch']['0']          = 'Suchtyp';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['textsearch']['1']          = 'Findet Textstellen.';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['textsearch']['1']          = 'Dieser Filter findet Textstellen.';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typenames']['text']        = 'Textfilter';
 

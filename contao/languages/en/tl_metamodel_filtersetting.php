@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_text.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Christian de la Haye <service@delahaye.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2016 The MetaModels team.
+ * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_text/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -34,3 +34,8 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['beginswith'] = 
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['endswith']   = 'ends with search term';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['any']        = 'search any word (OR)';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['all']        = 'search all words (AND)';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['references']['regexp']     = 'use own regexp';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['pattern'][0]               = 'Regexp pattern';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['pattern'][1]               =
+    'Set the <a href="https://dev.mysql.com/doc/refman/5.6/en/regexp.html" onclick="window.open(this.href)">regexp pattern</a>' .
+    ' with only one placeholder "%s" for your search string. See at MySQL regexp for more information.';
